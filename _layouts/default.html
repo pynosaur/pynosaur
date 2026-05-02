@@ -135,7 +135,8 @@
           <input type="text" class="tool-search" id="toolSearch" placeholder="Search...">
           <ul id="toolList">
             {% for tool in site.data.tools %}
-            <li data-name="{{ tool.name }}"><a href="/{{ tool.name }}/"{% if page.url == "/" | append: tool.name | append: "/" %} class="active"{% endif %}>{{ tool.name }}<span class="tool-version">v{{ tool.version }}</span></a></li>
+            {% assign tool_path = "/" | append: tool.name | append: "/" %}
+            <li data-name="{{ tool.name }}"><a href="{{ tool_path }}"{% if page.url == tool_path %} class="active"{% endif %}>{{ tool.name }}<span class="tool-version">v{{ tool.version }}</span></a></li>
             {% endfor %}
           </ul>
         </nav>
