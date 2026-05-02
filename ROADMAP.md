@@ -9,6 +9,7 @@
 - **doc** - Documentation viewer
 - **sock** - Socket communication tool (send/receive messages and files)
 - **path** - File and directory finder powered by pathlib
+- **pyle** - Interactive disk usage explorer with curses TUI
 
 ## Future
 

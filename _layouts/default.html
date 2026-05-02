@@ -134,7 +134,9 @@
           <h3>Tools</h3>
           <input type="text" class="tool-search" id="toolSearch" placeholder="Search...">
           <ul id="toolList">
-            <li class="loading">Loading...</li>
+            {% for tool in site.data.tools %}
+            <li data-name="{{ tool.name }}"><a href="/{{ tool.name }}/"{% if page.url == "/" | append: tool.name | append: "/" %} class="active"{% endif %}>{{ tool.name }}<span class="tool-version">v{{ tool.version }}</span></a></li>
+            {% endfor %}
           </ul>
         </nav>
 
@@ -142,6 +144,7 @@
           <h3>Guides</h3>
           <ul>
             <li><a href="/creating-a-program/"{% if page.url == "/creating-a-program/" %} class="active"{% endif %}>Creating a Program</a></li>
+            <li><a href="/contributing/"{% if page.url == "/contributing/" %} class="active"{% endif %}>Contributing</a></li>
             <li><a href="/docs/"{% if page.url == "/docs/" %} class="active"{% endif %}>Tools Catalog</a></li>
           </ul>
         </nav>
@@ -164,112 +167,19 @@
     <script src="{{ "/assets/js/scale.fix.js" | relative_url }}"></script>
     <script>
       (function() {
-        var VISIBLE_COUNT = 4;
-        var currentPage = '{{ page.url }}';
         var toolList = document.getElementById('toolList');
-        var expanded = false;
-
-        function applyCollapse(items) {
-          var toggleLi = document.getElementById('toolToggleLi');
-          if (toggleLi) toggleLi.remove();
-
-          if (items.length <= VISIBLE_COUNT || expanded) {
-            items.forEach(function(item) {
-              item.li.classList.remove('collapsed');
-            });
-            return;
-          }
-
-          items.forEach(function(item, i) {
-            item.li.classList.toggle('collapsed', i >= VISIBLE_COUNT);
-          });
-
-          toggleLi = document.createElement('li');
-          toggleLi.id = 'toolToggleLi';
-          var btn = document.createElement('button');
-          btn.className = 'tool-toggle';
-          var remaining = items.length - VISIBLE_COUNT;
-          btn.textContent = '+ ' + remaining + ' more...';
-          btn.addEventListener('click', function() {
-            expanded = true;
-            items.forEach(function(item) {
-              item.li.classList.remove('collapsed');
-            });
-            toggleLi.remove();
-          });
-          toggleLi.appendChild(btn);
-          toolList.appendChild(toggleLi);
-        }
-
-        fetch('https://api.github.com/orgs/Pynosaur/repos?per_page=100')
-          .then(function(r) { return r.json(); })
-          .then(function(repos) {
-            toolList.innerHTML = '';
-            var added = [];
-
-            repos.forEach(function(repo) {
-              fetch('https://raw.githubusercontent.com/Pynosaur/' + repo.name + '/main/.program')
-                .then(function(r) { return r.ok ? r.text() : null; })
-                .then(function(text) {
-                  if (text) {
-                    var li = document.createElement('li');
-                    var a = document.createElement('a');
-                    var path = '/' + repo.name + '/';
-                    a.href = path;
-                    a.textContent = repo.name;
-                    if (currentPage === path) a.className = 'active';
-
-                    var match = text.match(/version:\s*([\d.]+)/);
-                    if (match) {
-                      var span = document.createElement('span');
-                      span.className = 'tool-version';
-                      span.textContent = 'v' + match[1];
-                      a.appendChild(span);
-                    }
-
-                    li.appendChild(a);
-                    li.dataset.name = repo.name;
-                    added.push({name: repo.name, li: li});
-                    added.sort(function(x, y) { return x.name.localeCompare(y.name); });
-                    toolList.innerHTML = '';
-                    added.forEach(function(item) { toolList.appendChild(item.li); });
-                    applyCollapse(added);
-                  }
-                });
-            });
-          })
-          .catch(function() {
-            toolList.innerHTML = '<li class="loading">Failed to load</li>';
-          });
+        var items = toolList.querySelectorAll('li');
 
         document.getElementById('toolSearch').addEventListener('input', function(e) {
           var filter = e.target.value.toLowerCase();
-          var items = document.querySelectorAll('#toolList li:not(#toolToggleLi)');
-          var toggleLi = document.getElementById('toolToggleLi');
-
-          if (filter) {
-            if (toggleLi) toggleLi.style.display = 'none';
-            items.forEach(function(item) {
-              var text = item.textContent.toLowerCase();
-              var matches = text.includes(filter);
-              item.classList.toggle('hidden', !matches);
-              if (matches) item.classList.remove('collapsed');
-            });
-          } else {
-            items.forEach(function(item) {
+          items.forEach(function(item) {
+            if (!filter) {
               item.classList.remove('hidden');
-            });
-            if (!expanded && toggleLi) {
-              toggleLi.style.display = '';
-              var allItems = [];
-              items.forEach(function(item) {
-                allItems.push({li: item, name: item.dataset.name});
-              });
-              allItems.forEach(function(item, i) {
-                item.li.classList.toggle('collapsed', i >= VISIBLE_COUNT);
-              });
+            } else {
+              var name = (item.dataset.name || '').toLowerCase();
+              item.classList.toggle('hidden', !name.includes(filter));
             }
-          }
+          });
         });
       })();
     </script>

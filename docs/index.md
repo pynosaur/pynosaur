@@ -52,3 +52,10 @@ Send and receive messages and files over TCP sockets. Supports interactive chat,
 Find files and directories with glob patterns, depth control (layers), size filtering, and tree view. Powered by `pathlib`.
 - **Equivalent:** `find`
 - **Install:** `pget install path`
+
+---
+
+### [pyle](/pyle/) — Disk Usage Explorer
+Interactive disk usage explorer with a curses TUI. Browse directories sorted by size with color-coded bars and vim-style navigation.
+- **Equivalent:** `ncdu` / `du`
+- **Install:** `pget install pyle`

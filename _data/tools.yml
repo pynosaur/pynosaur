@@ -1,0 +1,39 @@
+- name: doc
+  version: "0.1.1"
+  description: Documentation viewer for Pynosaur CLI tools
+
+- name: path
+  version: "0.1.0"
+  description: Find files and directories with filters and tree view
+
+- name: pget
+  version: "0.1.4"
+  description: Package manager for standalone Python CLI tools
+
+- name: plack
+  version: "0.5.0"
+  description: Simple Python linter with YAML configuration
+
+- name: purl
+  version: "0.2.0"
+  description: Transfer data from URLs with colored output and timing
+
+- name: pyle
+  version: "0.1.0"
+  description: Interactive disk usage explorer with curses TUI
+
+- name: pyng
+  version: "0.1.0"
+  description: Pure Python network ping with colorized output
+
+- name: see
+  version: "0.1.1"
+  description: Display file contents with slicing and emphasis
+
+- name: sock
+  version: "0.1.0"
+  description: Send and receive data over TCP sockets
+
+- name: yday
+  version: "0.1.2"
+  description: Print the current day of the year

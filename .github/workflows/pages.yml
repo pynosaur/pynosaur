@@ -35,6 +35,7 @@ jobs:
               'sock': 'sock - Socket Communication',
               'path': 'path - File Finder',
               'plack': 'plack - Python Linter',
+              'pyle': 'pyle - Disk Usage Explorer',
           }
           raw_open = '{' + '% raw %' + '}'
           raw_close = '{' + '% endraw %' + '}'
