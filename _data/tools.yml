@@ -31,7 +31,7 @@
   description: Pure Python network ping with colorized output
 
 - name: redo
-  version: "0.1.1"
+  version: "0.2.0"
   description: Repeat a command N times with timing summary
 
 - name: see
