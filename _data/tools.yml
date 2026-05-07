@@ -11,11 +11,11 @@
   description: Find files and directories with filters and tree view
 
 - name: pget
-  version: "0.1.7"
+  version: "0.2.2"
   description: Package manager for standalone Python CLI tools
 
 - name: blue
-  version: "0.6.1"
+  version: "0.9.0"
   description: Simple Python linter with YAML configuration
 
 - name: purl
@@ -23,7 +23,7 @@
   description: Transfer data from URLs with colored output and timing
 
 - name: pyle
-  version: "0.3.4"
+  version: "0.3.6"
   description: Interactive disk usage explorer with curses TUI
 
 - name: pyng
@@ -35,12 +35,16 @@
   description: Repeat a command N times with timing summary
 
 - name: see
-  version: "0.1.1"
+  version: "0.1.2"
   description: Display file contents with slicing and emphasis
 
 - name: sock
   version: "0.1.2"
   description: Send and receive data over TCP sockets
+
+- name: matrix
+  version: "0.4.1"
+  description: Matrix digital rain effect for your terminal
 
 - name: yday
   version: "0.1.4"
