@@ -43,7 +43,7 @@
   description: Send and receive data over TCP sockets
 
 - name: matrix
-  version: "0.4.1"
+  version: "0.4.2"
   description: Matrix digital rain effect for your terminal
 
 - name: yday
