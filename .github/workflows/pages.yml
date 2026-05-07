@@ -24,37 +24,43 @@ jobs:
       - name: Fetch tool READMEs
         run: |
           python3 -c "
-          import urllib.request, os
-          tools = {
-              'pget': 'pget - Package Manager',
-              'see': 'see - File Viewer',
-              'purl': 'purl - URL Transfer Tool',
-              'yday': 'yday - Day of Year',
-              'doc': 'doc - Documentation Viewer',
-              'sock': 'sock - Socket Communication',
-              'path': 'path - File Finder',
-              'blue': 'blue - Python Linter',
-              'pyle': 'pyle - Disk Usage Explorer',
-          }
+          import urllib.request, re, pathlib
+
+          yml = pathlib.Path('_data/tools.yml').read_text()
+          tools = []
+          cur = {}
+          for line in yml.split('\n'):
+              m = re.match(r'^-?\s*name:\s*(.+)', line.strip())
+              if m:
+                  cur = {'name': m.group(1).strip()}
+              m = re.match(r'description:\s*(.+)', line.strip())
+              if m and cur:
+                  cur['desc'] = m.group(1).strip()
+                  tools.append(cur)
+                  cur = {}
+
           raw_open = '{' + '% raw %' + '}'
           raw_close = '{' + '% endraw %' + '}'
-          for tool, title in tools.items():
-              url = f'https://raw.githubusercontent.com/pynosaur/{tool}/main/README.md'
+          for t in tools:
+              name = t['name']
+              desc = t.get('desc', name)
+              title = f'{name} - {desc}'
+              url = f'https://raw.githubusercontent.com/pynosaur/{name}/main/README.md'
               try:
                   readme = urllib.request.urlopen(url).read().decode()
-                  print(f'{tool}: {len(readme)} bytes')
+                  print(f'{name}: {len(readme)} bytes')
               except Exception as e:
-                  readme = f'Could not load documentation. [View on GitHub](https://github.com/pynosaur/{tool}#readme)'
-                  print(f'{tool}: FAILED ({e})')
+                  readme = f'Could not load documentation. [View on GitHub](https://github.com/pynosaur/{name}#readme)'
+                  print(f'{name}: FAILED ({e})')
               page = '---\n'
               page += 'layout: default\n'
               page += f'title: \"{title}\"\n'
-              page += f'permalink: /{tool}/\n'
+              page += f'permalink: /{name}/\n'
               page += '---\n\n'
               page += raw_open + '\n'
               page += readme + '\n'
               page += raw_close + '\n'
-              with open(f'pages/{tool}.md', 'w') as f:
+              with open(f'pages/{name}.md', 'w') as f:
                   f.write(page)
           "
 
