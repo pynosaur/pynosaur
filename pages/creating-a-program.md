@@ -46,7 +46,7 @@ Every Pynosaur tool follows this exact layout:
 │       ├── test.yml          # CI: lint + test + optional build
 │       └── release.yml       # Auto-release on version bump
 ├── .githooks/
-│   └── pre-commit            # Local plack lint hook
+│   └── pre-commit            # Local blue lint hook
 ├── app/
 │   ├── __init__.py           # __version__ = "0.1.0"
 │   ├── main.py               # CLI entry point
@@ -364,10 +364,10 @@ jobs:
     - uses: actions/setup-python@v5
       with:
         python-version: '3.11'
-    - name: Run plack
+    - name: Run blue
       run: |
-        git clone --depth 1 https://github.com/Pynosaur/plack.git /tmp/plack
-        cd /tmp/plack && python app/main.py $GITHUB_WORKSPACE
+        git clone --depth 1 https://github.com/Pynosaur/blue.git /tmp/blue
+        cd /tmp/blue && python app/main.py $GITHUB_WORKSPACE
 
   test:
     needs: lint
@@ -548,10 +548,10 @@ Use the MIT License. Copy from any existing Pynosaur tool.
 
 ```bash
 #!/bin/sh
-if command -v plack > /dev/null 2>&1; then
-    plack .
+if command -v blue > /dev/null 2>&1; then
+    blue .
     if [ $? -ne 0 ]; then
-        echo "pre-commit: plack found issues. Fix them or commit with --no-verify."
+        echo "pre-commit: blue found issues. Fix them or commit with --no-verify."
         exit 1
     fi
 fi
@@ -671,7 +671,7 @@ Use this checklist before submitting your tool:
 - [ ] `doc/<name>.yaml` has all required fields
 - [ ] `app/utils/doc_reader.py` is included
 - [ ] `test/test_main.py` has passing tests
-- [ ] `plack .` reports no issues
+- [ ] `blue .` reports no issues
 - [ ] `.github/workflows/test.yml` is configured
 - [ ] `.github/workflows/release.yml` is configured
 - [ ] `BUILD` file has the correct genrule name
@@ -679,7 +679,7 @@ Use this checklist before submitting your tool:
 - [ ] `LICENSE` is MIT
 - [ ] `README.md` documents usage and options
 - [ ] `.gitignore` excludes `__pycache__/`, `bazel-*`, etc.
-- [ ] `.githooks/pre-commit` runs plack
+- [ ] `.githooks/pre-commit` runs blue
 - [ ] Tool uses **only** the Python standard library
 - [ ] Tool works on macOS and Linux
 - [ ] Exit codes are correct (0 = success, non-zero = error)

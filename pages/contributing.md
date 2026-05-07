@@ -39,7 +39,7 @@ Have an idea for an existing tool? Open an issue on the tool's repo. For ecosyst
 1. Fork the tool's repository
 2. Create a branch (`fix/description` or `feat/description`)
 3. Make your changes following the standards below
-4. Run tests and plack
+4. Run tests and blue
 5. Open a PR against `main`
 
 ### Build a New Tool
@@ -68,14 +68,14 @@ If the stdlib cannot do something, find a creative way or accept the limitation.
 
 ### Style
 
-- **4-space indentation** (enforced by plack)
+- **4-space indentation** (enforced by blue)
 - **snake_case** for functions and variables
 - **Type hints** on function signatures
-- **No trailing whitespace** (plack --apply will fix this)
+- **No trailing whitespace** (blue --apply will fix this)
 - **Single final newline** at end of files
-- **Max line length**: follow plack's configured limit (default 100)
+- **Max line length**: follow blue's configured limit (default 100)
 
-Run `plack .` before committing. The pre-commit hook does this automatically if plack is installed.
+Run `blue .` before committing. The pre-commit hook does this automatically if blue is installed.
 
 ### Architecture
 
@@ -99,7 +99,7 @@ Run `plack .` before committing. The pre-commit hook does this automatically if 
 ### Before Opening a PR
 
 1. **Run tests**: `python test/test_main.py`
-2. **Run linter**: `plack .` (zero issues required)
+2. **Run linter**: `blue .` (zero issues required)
 3. **Test manually**: exercise the feature or bugfix by hand
 4. **Check cross-platform**: if you touched I/O, networking, or paths, verify on both macOS and Linux if possible
 
@@ -167,25 +167,25 @@ Make sure your code works across all of these. Avoid Python 3.9+ features unless
 
 ## Linting with Plack
 
-[Plack](https://github.com/Pynosaur/plack) is the ecosystem's linter. Install it:
+[Plack](https://github.com/Pynosaur/blue) is the ecosystem's linter. Install it:
 
 ```
-pget install plack
+pget install blue
 ```
 
 Or run from source:
 
 ```
-cd /path/to/plack && python app/main.py /path/to/your/tool/
+cd /path/to/blue && python app/main.py /path/to/your/tool/
 ```
 
-Common issues plack catches:
+Common issues blue catches:
 - Indentation not multiple of 4
 - Trailing whitespace
 - Missing final newline
 - Lines too long
 
-Auto-fix with `plack --apply .`
+Auto-fix with `blue --apply .`
 
 ---
 
@@ -196,7 +196,7 @@ Each tool is its own repository under the [Pynosaur](https://github.com/Pynosaur
 ```
 github.com/Pynosaur/<name>/
 ├── .github/workflows/    # CI + release
-├── .githooks/            # pre-commit (plack)
+├── .githooks/            # pre-commit (blue)
 ├── app/                  # Source code
 │   ├── __init__.py       # __version__
 │   ├── main.py           # Entry point

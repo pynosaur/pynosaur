@@ -33,7 +33,7 @@ jobs:
               'doc': 'doc - Documentation Viewer',
               'sock': 'sock - Socket Communication',
               'path': 'path - File Finder',
-              'plack': 'plack - Python Linter',
+              'blue': 'blue - Python Linter',
               'pyle': 'pyle - Disk Usage Explorer',
           }
           raw_open = '{' + '% raw %' + '}'

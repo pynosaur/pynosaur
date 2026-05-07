@@ -16,7 +16,7 @@ permalink: /roadmap/
 - **sock** - Socket communication tool (send/receive messages and files)
 - **path** - File and directory finder powered by pathlib
 - **pyle** - Interactive disk usage explorer with curses TUI
-- **plack** - Simple Python linter with YAML configuration
+- **blue** - Simple Python linter with YAML configuration
 - **pyng** - Pure Python network ping with colorized output
 
 ## Future

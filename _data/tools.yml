@@ -14,7 +14,7 @@
   version: "0.1.7"
   description: Package manager for standalone Python CLI tools
 
-- name: plack
+- name: blue
   version: "0.6.1"
   description: Simple Python linter with YAML configuration
 
