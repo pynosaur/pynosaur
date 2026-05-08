@@ -11,7 +11,7 @@
   description: Find files and directories with filters and tree view
 
 - name: pget
-  version: "0.2.2"
+  version: "0.2.3"
   description: Package manager for standalone Python CLI tools
 
 - name: blue
