@@ -19,7 +19,7 @@
   description: Find files and directories with filters and tree view
 
 - name: pget
-  version: "0.2.7"
+  version: "0.2.8"
   description: Package manager for standalone Python CLI tools
 
 - name: purl
