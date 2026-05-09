@@ -97,6 +97,19 @@ class TestToolsYml(unittest.TestCase):
             f'Tools missing pages/{{}}.md: {", ".join(missing)}',
         )
 
+    def test_each_tool_has_program_marker(self):
+        missing = []
+        for entry in self.entries:
+            prog_version = fetch_program_version(entry['name'])
+            if not prog_version:
+                missing.append(entry['name'])
+
+        self.assertEqual(
+            missing, [],
+            f'Tools in tools.yml missing .program file: '
+            f'{", ".join(missing)}',
+        )
+
     def test_versions_match_program(self):
         mismatches = []
         for entry in self.entries:
