@@ -9,6 +9,7 @@ ROOT = Path(__file__).resolve().parent.parent
 TOOLS_YML = ROOT / '_data' / 'tools.yml'
 PAGES_DIR = ROOT / 'pages'
 GITHUB_ORG = 'pynosaur'
+GITHUB_RAW = 'https://raw.githubusercontent.com'
 
 
 def parse_tools_yml(text: str) -> list:
@@ -41,29 +42,45 @@ def parse_tools_yml(text: str) -> list:
     return entries
 
 
-def fetch_program_version(tool_name: str) -> str:
-    """Fetch .program version from GitHub, fall back to local sibling."""
-    local = ROOT.parent / tool_name / '.program'
+def _fetch_file(tool_name: str, rel_path: str) -> str:
+    """Read a file from a sibling repo, falling back to GitHub raw."""
+    local = ROOT.parent / tool_name / rel_path
     if local.exists():
-        text = local.read_text(encoding='utf-8')
-        for line in text.split('\n'):
-            if line.startswith('version:'):
-                return line.split(':', 1)[1].strip()
+        return local.read_text(encoding='utf-8')
 
-    url = (
-        f'https://raw.githubusercontent.com/'
-        f'{GITHUB_ORG}/{tool_name}/main/.program'
-    )
+    url = f'{GITHUB_RAW}/{GITHUB_ORG}/{tool_name}/main/{rel_path}'
     try:
         response = urllib.request.urlopen(url, timeout=10)
-        text = response.read().decode('utf-8')
-        for line in text.split('\n'):
-            if line.startswith('version:'):
-                return line.split(':', 1)[1].strip()
+        return response.read().decode('utf-8')
     except Exception:
-        pass
+        return ''
 
+
+def fetch_program_version(tool_name: str) -> str:
+    """Extract version from .program file."""
+    text = _fetch_file(tool_name, '.program')
+    for line in text.split('\n'):
+        if line.startswith('version:'):
+            return line.split(':', 1)[1].strip()
     return ''
+
+
+def fetch_init_version(tool_name: str) -> str:
+    """Extract __version__ from app/__init__.py."""
+    text = _fetch_file(tool_name, 'app/__init__.py')
+    m = re.search(r'__version__\s*=\s*["\']([^"\']+)["\']', text)
+    return m.group(1) if m else ''
+
+
+def fetch_doc_version(tool_name: str) -> str:
+    """Extract VERSION from doc/<name>.yaml."""
+    text = _fetch_file(tool_name, f'doc/{tool_name}.yaml')
+    m = re.search(
+        r'^VERSION:\s*"?([^"\n]+)"?\s*$',
+        text,
+        re.MULTILINE,
+    )
+    return m.group(1).strip() if m else ''
 
 
 class TestToolsYml(unittest.TestCase):
@@ -110,22 +127,91 @@ class TestToolsYml(unittest.TestCase):
             f'{", ".join(missing)}',
         )
 
-    def test_versions_match_program(self):
+    def test_tools_yml_matches_program(self):
         mismatches = []
         for entry in self.entries:
-            prog_version = fetch_program_version(entry['name'])
-            if not prog_version:
+            prog = fetch_program_version(entry['name'])
+            if not prog:
                 continue
-            if entry['version'] != prog_version:
+            if entry['version'] != prog:
                 mismatches.append(
-                    f'{entry["name"]}: tools.yml={entry["version"]} '
-                    f'.program={prog_version}'
+                    f'{entry["name"]}: '
+                    f'tools.yml={entry["version"]} '
+                    f'.program={prog}'
                 )
 
         self.assertEqual(
             mismatches, [],
-            f'Version mismatches:\n  ' + '\n  '.join(mismatches)
-            if mismatches else '',
+            'tools.yml vs .program:\n  '
+            + '\n  '.join(mismatches),
+        )
+
+    def test_init_version_matches_program(self):
+        mismatches = []
+        for entry in self.entries:
+            prog = fetch_program_version(entry['name'])
+            init = fetch_init_version(entry['name'])
+            if not prog or not init:
+                continue
+            if init != prog:
+                mismatches.append(
+                    f'{entry["name"]}: '
+                    f'__init__.py={init} '
+                    f'.program={prog}'
+                )
+
+        self.assertEqual(
+            mismatches, [],
+            'app/__init__.py vs .program:\n  '
+            + '\n  '.join(mismatches),
+        )
+
+    def test_doc_version_matches_program(self):
+        mismatches = []
+        for entry in self.entries:
+            prog = fetch_program_version(entry['name'])
+            doc = fetch_doc_version(entry['name'])
+            if not prog or not doc:
+                continue
+            if doc != prog:
+                mismatches.append(
+                    f'{entry["name"]}: '
+                    f'doc/{entry["name"]}.yaml={doc} '
+                    f'.program={prog}'
+                )
+
+        self.assertEqual(
+            mismatches, [],
+            'doc/<name>.yaml vs .program:\n  '
+            + '\n  '.join(mismatches),
+        )
+
+    def test_each_tool_has_init_version(self):
+        missing = []
+        for entry in self.entries:
+            prog = fetch_program_version(entry['name'])
+            init = fetch_init_version(entry['name'])
+            if prog and not init:
+                missing.append(entry['name'])
+
+        self.assertEqual(
+            missing, [],
+            'Tools with .program but no __version__ in '
+            f'app/__init__.py: {", ".join(missing)}',
+        )
+
+    def test_each_tool_has_doc_version(self):
+        missing = []
+        for entry in self.entries:
+            prog = fetch_program_version(entry['name'])
+            doc = fetch_doc_version(entry['name'])
+            if prog and not doc:
+                missing.append(entry['name'])
+
+        self.assertEqual(
+            missing, [],
+            'Tools with .program but no VERSION in '
+            f'doc/<name>.yaml: {", ".join(missing)}',
         )
 
     def test_entries_sorted_alphabetically(self):
