@@ -15,7 +15,17 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate tools.yml
+        run: python test/test_tools.py -v
+
   build:
+    needs: validate
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
