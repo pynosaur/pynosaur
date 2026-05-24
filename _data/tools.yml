@@ -3,7 +3,7 @@
   description: Simple Python linter with YAML configuration
 
 - name: clock
-  version: "0.1.4"
+  version: "0.1.5"
   description: Terminal clock, stopwatch, and timer with curses TUI
 
 - name: doc
@@ -27,7 +27,7 @@
   description: Transfer data from URLs with colored output and timing
 
 - name: pyle
-  version: "0.3.6"
+  version: "0.3.7"
   description: Interactive disk usage explorer with curses TUI
 
 - name: pyng
