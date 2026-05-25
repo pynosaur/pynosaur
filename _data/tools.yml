@@ -15,7 +15,7 @@
   description: Matrix digital rain effect for your terminal
 
 - name: pacmann
-  version: "0.1.2"
+  version: "0.1.3"
   description: Terminal Pac-Man with authentic arcade mechanics
 
 - name: path
