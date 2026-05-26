@@ -59,3 +59,10 @@ Find files and directories with glob patterns, depth control (layers), size filt
 Interactive disk usage explorer with a curses TUI. Browse directories sorted by size with color-coded bars and vim-style navigation.
 - **Equivalent:** `ncdu` / `du`
 - **Install:** `pget install pyle`
+
+---
+
+### [angman](/angman/) — Terminal Pac-Man
+Arcade-accurate Pac-Man in the terminal with curses. Ghost AI, fruits, power pellets, and authentic mechanics.
+- **Equivalent:** PAC-MAN
+- **Install:** `pget install angman`
