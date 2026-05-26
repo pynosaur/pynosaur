@@ -1,5 +1,5 @@
 - name: angman
-  version: "0.2.4"
+  version: "0.2.5"
   description: Terminal Pac-Man with authentic arcade mechanics
 
 - name: blue
