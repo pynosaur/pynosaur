@@ -3,7 +3,7 @@
   description: Terminal Pac-Man with authentic arcade mechanics
 
 - name: blue
-  version: "0.11.0"
+  version: "0.12.0"
   description: Simple Python linter with YAML configuration
 
 - name: clock
@@ -23,7 +23,7 @@
   description: Find files and directories with filters and tree view
 
 - name: pget
-  version: "0.2.8"
+  version: "0.2.9"
   description: Package manager for standalone Python CLI tools
 
 - name: purl
