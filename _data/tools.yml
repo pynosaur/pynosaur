@@ -31,7 +31,7 @@
   description: Transfer data from URLs with colored output and timing
 
 - name: pyle
-  version: "0.5.0"
+  version: "0.5.1"
   description: Interactive disk usage explorer with curses TUI
 
 - name: pyng
